@@ -1,0 +1,23 @@
+﻿{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "home": {
+            "matchCondition": {
+                "route": "/{*rest}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://udacityshared.blob.core.windows.net/udacity-vm-manager-angular-frontend/{rest}"
+        },
+        "home-index": {
+            "matchCondition": {
+                "route": "/",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://udacityshared.blob.core.windows.net/udacity-vm-manager-angular-frontend/index.html"
+        }
+    }
+}
