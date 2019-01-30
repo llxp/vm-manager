@@ -12,7 +12,6 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using VMOperations;
 
 namespace FunctionApp3
 {
