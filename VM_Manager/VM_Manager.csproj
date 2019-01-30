@@ -10,15 +10,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="VMOperations">
-      <HintPath>bin\Debug\net461\bin\VMOperations.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="id_ed25519">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="local.settings.json">
