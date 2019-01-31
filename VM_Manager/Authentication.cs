@@ -38,17 +38,17 @@ namespace FunctionApp3 {
 
     internal sealed class Authentication {
         public static AuthenticationResponse BearerToken { get; private set; }
+        public static AzureManagementData ManagementData { get; private set; }
         public static bool Authenticate(CertData cert, Stream certBlob) {
             try {
-                //string path = "D:\\home\\site\\wwwroot";
-                //string path2 = ".";
-                //string text = await Task.FromResult<string>(File.ReadAllText(path + "\\id_ed25519", Encoding.UTF8));
                 if(certBlob.CanRead) {
-                    string fileContent = new StreamReader(certBlob).ReadToEnd();
-                    fileContent = fileContent.Trim();
-                    cert.cert = cert.cert.Trim();
-                    if (fileContent == cert.cert) {
-                        return true;
+                    using (StreamReader streamReader = new StreamReader(certBlob)) {
+                        string fileContent = streamReader.ReadToEnd();
+                        fileContent = fileContent.Trim().ReplaceAllCharacters('\n').ReplaceAllCharacters('\r').ToLowerInvariant();
+                        cert.cert = cert.cert.Trim().ReplaceAllCharacters('\n').ReplaceAllCharacters('\r').ToLowerInvariant();
+                        if (fileContent == cert.cert) {
+                            return true;
+                        }
                     }
                 }
             } catch (System.IO.IOException ex) {
@@ -79,14 +79,14 @@ namespace FunctionApp3 {
             string baseUri = "https://login.microsoftonline.com";
             string path = "/{0}/oauth2/token";
             string resource = "https://management.azure.com";
-            path = string.Format(path, AzureManagementData.DOMAIN);
+            path = string.Format(path, ManagementData.Tenant);
             HttpClient client = new HttpClient {
                 BaseAddress = new Uri(baseUri)
             };
             Dictionary<string, string> formData = new Dictionary<string, string> {
                 { "grant_type", "client_credentials" },
-                { "client_id", AzureManagementData.CLIENTID },
-                { "client_secret", AzureManagementData.SECRET },
+                { "client_id", ManagementData.ClientID },
+                { "client_secret", ManagementData.Secret },
                 { "resource", resource }
             };
             HttpResponseMessage response = await client.PostAsync(path, new FormUrlEncodedContent(formData));
@@ -103,6 +103,31 @@ namespace FunctionApp3 {
                 }
             }
             return false;
+        }
+
+        public static async Task ReadAuthenticationDataFromFile(Stream stream) {
+            try {
+                if (stream.CanRead) {
+                    using (StreamReader streamReader = new StreamReader(stream)) {
+                        string fileContent = await streamReader.ReadToEndAsync();
+                        ManagementData = JsonConvert.DeserializeObject<AzureManagementData>(fileContent);
+                    }
+                }
+            } catch(Exception ex) {
+                ManagementData = null;
+            }
+        }
+    }
+
+    internal static class StringExtensions {
+        public static string ReplaceAllCharacters(this string s, params char[] removeChars) {
+            StringBuilder sb = new StringBuilder(s.Length);
+            foreach (char c in s) {
+                if (!removeChars.Contains(c)) {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
     }
 }

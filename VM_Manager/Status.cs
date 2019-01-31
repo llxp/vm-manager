@@ -22,10 +22,12 @@ namespace FunctionApp3
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequestMessage req,
             [Blob("certs/id_ed25519", FileAccess.Read)] Stream certBlob,
+            [Blob("certs/credentials.json", FileAccess.Read)] Stream credentialsBlob,
             TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
             logWriter = log;
+            await Authentication.ReadAuthenticationDataFromFile(credentialsBlob);
             return await Authentication.ParseAuthenticationData(req, certBlob) ? await checkVM(req) : Authentication.AuthenticationError();
         }
 
@@ -33,7 +35,7 @@ namespace FunctionApp3
             if (await Authentication.AuthenticateToAzure()) {
                 string baseUri = "https://management.azure.com";
                 string path = "/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Compute/virtualMachines/{2}?$expand=instanceView&api-version=2018-06-01";
-                path = string.Format(path, AzureManagementData.SUBSCRIPTIONID, AzureManagementData.RESOURCEGROUPNAME, AzureManagementData.VMNAME);
+                path = string.Format(path, Authentication.ManagementData.SubscriptionID, Authentication.ManagementData.ResourceGroupName, Authentication.ManagementData.VMName);
                 HttpClient client = new HttpClient() {
                     BaseAddress = new Uri(baseUri)
                 };
