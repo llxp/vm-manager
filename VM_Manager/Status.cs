@@ -47,7 +47,7 @@ namespace FunctionApp3
                         dynamic obj = JObject.Parse(content as string);
                         dynamic statuses = obj.properties.instanceView.statuses;
                         if (statuses is JArray statuses2) {
-                            IEnumerable<JToken> status = statuses2.Where(o => (o["code"].ToString()).StartsWith("PowerState/"));
+                            IEnumerable<JToken> status = statuses2.Where(o => o["code"].ToString().StartsWith("PowerState/"));
                             if (statuses2.Count > 0 && status.Count() == 1) {
                                 string code = status.ElementAt(0)["code"].ToString();
                                 if (code.Length > 0) {
