@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FunctionApp3 {
-    internal sealed class CertData {
-        public string cert { get; set; }
+    internal struct CertData {
+        [JsonProperty("cert")]
+        public string Cert { get; set; }
     }
 
     internal sealed class AuthenticationResponse {
@@ -45,13 +46,13 @@ namespace FunctionApp3 {
                     using (StreamReader streamReader = new StreamReader(certBlob)) {
                         string fileContent = streamReader.ReadToEnd();
                         fileContent = fileContent.Trim().ReplaceAllCharacters('\n').ReplaceAllCharacters('\r').ToLowerInvariant();
-                        cert.cert = cert.cert.Trim().ReplaceAllCharacters('\n').ReplaceAllCharacters('\r').ToLowerInvariant();
-                        if (fileContent == cert.cert) {
+                        cert.Cert = cert.Cert.Trim().ReplaceAllCharacters('\n').ReplaceAllCharacters('\r').ToLowerInvariant();
+                        if (fileContent == cert.Cert) {
                             return true;
                         }
                     }
                 }
-            } catch (System.IO.IOException ex) {
+            } catch (System.IO.IOException) {
                 return false;
             }
             return false;
@@ -62,7 +63,7 @@ namespace FunctionApp3 {
             try {
                 CertData e = JsonConvert.DeserializeObject<CertData>(body as string);
                 return Authenticate(e, certBlob);
-            } catch (Exception ex) {
+            } catch (Exception) {
                 return false;
             }
         }
@@ -99,7 +100,7 @@ namespace FunctionApp3 {
                         BearerToken = jsonObj;
                         return true;
                     }
-                } catch(JsonSerializationException ex) {
+                } catch (JsonSerializationException) {
                 }
             }
             return false;
@@ -113,7 +114,7 @@ namespace FunctionApp3 {
                         ManagementData = JsonConvert.DeserializeObject<AzureManagementData>(fileContent);
                     }
                 }
-            } catch(Exception ex) {
+            } catch (Exception) {
                 ManagementData = null;
             }
         }
