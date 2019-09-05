@@ -13,22 +13,15 @@ using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-<<<<<<< HEAD
-namespace VMManager
-=======
-namespace FunctionApp3
->>>>>>> 54ecdc91abc9326d183b6b1e2074238b760ce9a7
-{
-    public static class Status
-    {
+namespace VMManager {
+    public static class Status {
         private static TraceWriter logWriter;
         [FunctionName("status")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequestMessage req,
             [Blob("certs/id_ed25519", FileAccess.Read)] Stream certBlob,
             [Blob("certs/credentials.json", FileAccess.Read)] Stream credentialsBlob,
-            TraceWriter log)
-        {
+            TraceWriter log) {
             log.Info("C# HTTP trigger function processed a request.");
             logWriter = log;
             await Authentication.ReadAuthenticationDataFromFile(credentialsBlob);

@@ -8,11 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-<<<<<<< HEAD
 namespace VMManager {
-=======
-namespace FunctionApp3 {
->>>>>>> 54ecdc91abc9326d183b6b1e2074238b760ce9a7
     internal struct CertData {
         [JsonProperty("cert")]
         public string Cert { get; set; }
