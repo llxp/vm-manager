@@ -13,7 +13,11 @@ using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+<<<<<<< HEAD
+namespace VMManager
+=======
 namespace FunctionApp3
+>>>>>>> 54ecdc91abc9326d183b6b1e2074238b760ce9a7
 {
     public static class Status
     {

@@ -1,0 +1,7 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=storageaccountname;AccountKey=password_from_azure_see_at_keys;BlobEndpoint=https://storageaccountname.blob.core.windows.net/;TableEndpoint=https://storageaccountname.table.core.windows.net/;QueueEndpoint=https://storageaccountname.queue.core.windows.net/;FileEndpoint=https://storageaccountname.file.core.windows.net/",
+        "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=storageaccountname;AccountKey=password_from_azure_see_at_keys;BlobEndpoint=https://storageaccountname.blob.core.windows.net/;TableEndpoint=https://storageaccountname.table.core.windows.net/;QueueEndpoint=https://storageaccountname.queue.core.windows.net/;FileEndpoint=https://storageaccountname.file.core.windows.net/"
+    }
+}
